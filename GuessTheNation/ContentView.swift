@@ -18,6 +18,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
+            
             LinearGradient(gradient: Gradient(colors: [.blue,.black]), startPoint: .top, endPoint: .bottom)
                 .edgesIgnoringSafeArea(.all)
             VStack(spacing: 30) {
@@ -39,9 +40,18 @@ struct ContentView: View {
                             .shadow(color: .black, radius: 2)
                     }
                 }
+                Text("Score: \(scoreBoard)")
+                .foregroundColor(.white).font(.largeTitle)
+                Button(action: {
+                    self.restartGame()
+                }) {
+                    Text("Restart Game")
+                        .foregroundColor(.white)
+                }
+                
                 Spacer()
             }
-            Text(
+            
         }
         .alert(isPresented: $showingScore) {
             Alert(title: Text(scoreTitle), message: Text("Your score is ???"), dismissButton: .default(Text("Continue")) {
@@ -54,7 +64,7 @@ struct ContentView: View {
             scoreTitle = "Correct"
             scoreBoard += 1
         }else {
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong, thats the flag of \(countries[number])"
             scoreBoard -= 1
         }
         showingScore = true
@@ -62,6 +72,11 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    func restartGame() {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+        scoreBoard = 0
     }
 }
 
